@@ -1,82 +1,34 @@
 controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
-	
+    proiettile = sprites.createProjectileFromSprite(img`
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . 5 5 5 5 5 5 . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        `, Navicella, 50, 0)
+    proiettile.setVelocity(100, 0)
 })
-let Pipistrello = sprites.create(assets.image`Pipistrello`, SpriteKind.Player)
-animation.runImageAnimation(
-Pipistrello,
-[img`
-    . . f f f . . . . . . . . f f f 
-    . f f c c . . . . . . f c b b c 
-    f f c c . . . . . . f c b b c . 
-    f c f c . . . . . . f b c c c . 
-    f f f c c . c c . f c b b c c . 
-    f f c 3 c c 3 c c f b c b b c . 
-    f f b 3 b c 3 b c f b c c b c . 
-    . c b b b b b b c b b c c c . . 
-    . c 1 b b b 1 b b c c c c . . . 
-    c b b b b b b b b b c c . . . . 
-    c b c b b b c b b b b f . . . . 
-    f b 1 f f f 1 b b b b f c . . . 
-    f b b b b b b b b b b f c c . . 
-    . f b b b b b b b b c f . . . . 
-    . . f b b b b b b c f . . . . . 
-    . . . f f f f f f f . . . . . . 
-    `,img`
-    . . f f f . . . . . . . . . . . 
-    f f f c c . . . . . . . . f f f 
-    f f c c . . c c . . . f c b b c 
-    f f c 3 c c 3 c c f f b b b c . 
-    f f b 3 b c 3 b c f b b c c c . 
-    . c b b b b b b c f b c b c c . 
-    . c b b b b b b c b b c b b c . 
-    c b 1 b b b 1 b b b c c c b c . 
-    c b b b b b b b b c c c c c . . 
-    f b c b b b c b b b b f c . . . 
-    f b 1 f f f 1 b b b b f c c . . 
-    . f b b b b b b b b c f . . . . 
-    . . f b b b b b b c f . . . . . 
-    . . . f f f f f f f . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    `,img`
-    . . . . . . . . . . . . . . . . 
-    . . c c . . c c . . . . . . . . 
-    . . c 3 c c 3 c c c . . . . . . 
-    . c b 3 b c 3 b c c c . . . . . 
-    . c b b b b b b b b f f . . . . 
-    c c b b b b b b b b f f . . . . 
-    c b 1 b b b 1 b b c f f f . . . 
-    c b b b b b b b b f f f f . . . 
-    f b c b b b c b c c b b b . . . 
-    f b 1 f f f 1 b f c c c c . . . 
-    . f b b b b b b f b b c c . . . 
-    c c f b b b b b c c b b c . . . 
-    c c c f f f f f f c c b b c . . 
-    . c c c . . . . . . c c c c c . 
-    . . c c c . . . . . . . c c c c 
-    . . . . . . . . . . . . . . . . 
-    `,img`
-    . f f f . . . . . . . . f f f . 
-    f f c . . . . . . . f c b b c . 
-    f c c . . . . . . f c b b c . . 
-    c f . . . . . . . f b c c c . . 
-    c f f . . . . . f f b b c c . . 
-    f f f c c . c c f b c b b c . . 
-    f f f c c c c c f b c c b c . . 
-    . f c 3 c c 3 b c b c c c . . . 
-    . c b 3 b c 3 b b c c c c . . . 
-    c c b b b b b b b b c c . . . . 
-    c b 1 b b b 1 b b b b f c . . . 
-    f b b b b b b b b b b f c c . . 
-    f b c b b b c b b b b f . . . . 
-    . f 1 f f f 1 b b b c f . . . . 
-    . . f b b b b b b c f . . . . . 
-    . . . f f f f f f f . . . . . . 
-    `],
-150,
-true
-)
-let Navicella = sprites.create(img`
+sprites.onOverlap(SpriteKind.Player, SpriteKind.Player, function (sprite, otherSprite) {
+    info.setLife(-1)
+})
+sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Enemy, function (sprite, otherSprite) {
+    Pipistrello.destroy()
+})
+let Pipistrello: Sprite = null
+let proiettile: Sprite = null
+let Navicella: Sprite = null
+Navicella = sprites.create(img`
     . . . . . . 2 2 2 2 2 2 . . . . 
     . . . . . 4 4 4 4 4 4 4 4 . . . 
     . . . . . . . . 2 . . . . . . . 
@@ -94,4 +46,28 @@ let Navicella = sprites.create(img`
     . . . . . . . . . . . . . . . . 
     . . . . . . . . . . . . . . . . 
     `, SpriteKind.Player)
+Navicella.setStayInScreen(true)
 controller.moveSprite(Navicella)
+info.setLife(3)
+game.onUpdateInterval(2000, function () {
+    Pipistrello = sprites.create(img`
+        . . f f f . . . . . . . . f f f 
+        . f f c c . . . . . . f c b b c 
+        f f c c . . . . . . f c b b c . 
+        f c f c . . . . . . f b c c c . 
+        f f f c c . c c . f c b b c c . 
+        f f c 3 c c 3 c c f b c b b c . 
+        f f b 3 b c 3 b c f b c c b c . 
+        . c b b b b b b c b b c c c . . 
+        . c 1 b b b 1 b b c c c c . . . 
+        c b b b b b b b b b c c . . . . 
+        c b c b b b c b b b b f . . . . 
+        f b 1 f f f 1 b b b b f c . . . 
+        f b b b b b b b b b b f c c . . 
+        . f b b b b b b b b c f . . . . 
+        . . f b b b b b b c f . . . . . 
+        . . . f f f f f f f . . . . . . 
+        `, SpriteKind.Player)
+    Pipistrello.setPosition(160, 60)
+    Pipistrello.setVelocity(-100, 0)
+})
