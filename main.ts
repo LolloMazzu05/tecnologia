@@ -19,13 +19,14 @@ controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
         `, Navicella, 50, 0)
     proiettile.setVelocity(100, 0)
 })
-sprites.onOverlap(SpriteKind.Player, SpriteKind.Player, function (sprite, otherSprite) {
-    info.setLife(-1)
-})
 sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Enemy, function (sprite, otherSprite) {
-    Pipistrello.destroy()
+    otherSprite.destroy()
 })
-let Pipistrello: Sprite = null
+sprites.onOverlap(SpriteKind.Player, SpriteKind.Enemy, function (sprite, otherSprite) {
+    otherSprite.destroy()
+    info.changeLifeBy(-1)
+})
+let Asteroidi: Sprite = null
 let proiettile: Sprite = null
 let Navicella: Sprite = null
 Navicella = sprites.create(img`
@@ -49,25 +50,25 @@ Navicella = sprites.create(img`
 Navicella.setStayInScreen(true)
 controller.moveSprite(Navicella)
 info.setLife(3)
-game.onUpdateInterval(2000, function () {
-    Pipistrello = sprites.create(img`
-        . . f f f . . . . . . . . f f f 
-        . f f c c . . . . . . f c b b c 
-        f f c c . . . . . . f c b b c . 
-        f c f c . . . . . . f b c c c . 
-        f f f c c . c c . f c b b c c . 
-        f f c 3 c c 3 c c f b c b b c . 
-        f f b 3 b c 3 b c f b c c b c . 
-        . c b b b b b b c b b c c c . . 
-        . c 1 b b b 1 b b c c c c . . . 
-        c b b b b b b b b b c c . . . . 
-        c b c b b b c b b b b f . . . . 
-        f b 1 f f f 1 b b b b f c . . . 
-        f b b b b b b b b b b f c c . . 
-        . f b b b b b b b b c f . . . . 
-        . . f b b b b b b c f . . . . . 
-        . . . f f f f f f f . . . . . . 
-        `, SpriteKind.Player)
-    Pipistrello.setPosition(160, 60)
-    Pipistrello.setVelocity(-100, 0)
+game.onUpdateInterval(randint(200, 500), function () {
+    Asteroidi = sprites.create(img`
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . c c . . . . . . . . 
+        . . . . c a f b c . . . . . . . 
+        . . . . b f f b c c . . . . . . 
+        . . . a a f b a b a c . . . . . 
+        . . . c a c b b f f b . . . . . 
+        . . . . b f f b f a b . . . . . 
+        . . . . a f f b b b a . . . . . 
+        . . . . . a b b c c . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        `, SpriteKind.Enemy)
+    Asteroidi.setPosition(160, randint(20, 100))
+    Asteroidi.setVelocity(-100, 0)
 })
